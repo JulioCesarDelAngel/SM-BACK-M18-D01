@@ -1,0 +1,30 @@
+{
+  "name": "sm-back-m18-d01",
+  "version": "1.0.0",
+  "description": "Api de redes sociales",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index",
+    "dev": "nodemon index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JulioCesarDelAngel/SM-BACK-M18-D01.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JulioCesarDelAngel/SM-BACK-M18-D01/issues"
+  },
+  "homepage": "https://github.com/JulioCesarDelAngel/SM-BACK-M18-D01#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^6.0.13",
+    "nodemon": "^2.0.9"
+  },
+  "engines": {
+    "node": "16.18.1"
+  }  
+}
