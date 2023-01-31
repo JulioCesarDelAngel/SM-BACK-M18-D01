@@ -1,4 +1,5 @@
 const { User } = require('../models');
+const { findByIdAndUpdate } = require('../models/User');
 
 module.exports = {
     async getUsers(request, response){
@@ -64,5 +65,23 @@ module.exports = {
     },
     updateUser(request, response){
         response.status(200).json({code:'200', message:'ACTUALIZAR Usuario', data:[{userId:`${request.params.userId}`,name:"usuario actualizado demo"}]});
+    },
+
+    async addFriend (request, response){
+        try {
+            console.log('datos', request.params);
+            let data = await User.findByIdAndUpdate(
+                {_id : request.params.userId},
+                {$addToSet: {friends: request.params.friendId} }, { new : true}
+            );
+            if (!data){
+                response.status(404).json({code:404, message:"no se encontro el usuario",data:[]}); 
+                return
+            }
+            response.status(200).json(data); 
+        }
+        catch ( error ){
+            response.status(500).json( error );
+        }
     }
 };
