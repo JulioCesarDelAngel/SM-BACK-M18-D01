@@ -1,17 +1,30 @@
 const { User } = require('../models');
 
 module.exports = {
-    getUsers(request, response){
-        response.status(200).json({code:'200', message:'TODOS LOS usuarios demo', data:[]});
+    async getUsers(request, response){
+        try {
+            let data = await User.find({});
+            response.status(200).json(data); 
+        }
+        catch ( error ){
+            response.status(500).json( error );
+        }
     },
-    getSingleUser(request,response){
-        response.status(200).json({code:'200', message:'SOLO UN  DinoUsuario', data:[{userId:`${request.params.userId}`,name:"el usuario demo"}]});
+    async getSingleUser(request,response){
+        try {
+            let data =  await User.findById(request.params.userId);
+            response.status(200).json(data);     
+        }
+        catch ( error ){
+            response.status(500).json( error );
+        }
     },
     async createUser(request, response) {
-        //response.status(200).json({code:'200', message:'CREAR un Usuario', data:[{userId:`${request.params.userId}`,name:"nuevo usuario demo"}]});
         try {
+            data = await User.create(request.body);
+            response.status(200).json(data); 
 
-             let exists = await User.findOne({ 
+/*              let exists = await User.findOne({ 
                     $or : [
                             {'username' :`${request.body.username}`},
                             {'email': `${request.body.email}`}
@@ -23,16 +36,31 @@ module.exports = {
             }
             else
             {
-                response.json({code:500, message:"usuario ya existe", data :[]})
+                response.json({code:500, message:"Usuario ya existe", data :[]})
+            } */
+        }
+        catch ( error ){
+            response.status(500).json( error );
+            /* console.log("error", error);
+            if (error.code ==11000)
+            {
+                console.log("usuario ya existe");
+            } */            
+        }
+        
+    },
+    async deleteUser(request, response){
+        try {
+            let data  = await User.findByIdAndDelete(request.params.userId);
+            if (!data){
+                response.status(404).json({code:404, message:"no se encontro el usuario",data:[]}); 
+                return
             }
+            response.status(200).json(data); 
         }
         catch ( error ){
             response.status(500).json( error );
         }
-        
-    },
-    deleteUser(request, response){
-        response.status(200).json({code:'200', message:'BORRAR Usuario', data:[{userId:`${request.params.userId}`,name:"usario eliminado demo"}]});
     },
     updateUser(request, response){
         response.status(200).json({code:'200', message:'ACTUALIZAR Usuario', data:[{userId:`${request.params.userId}`,name:"usuario actualizado demo"}]});
