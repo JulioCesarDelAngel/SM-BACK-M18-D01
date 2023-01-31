@@ -20,13 +20,23 @@ const userSchema = new Schema(
                 type: Schema.Types.ObjectId,
                 ref : 'user'   //referencia al nombre del modelo case sensitive
             }
+        ],
+        thoughts : [
+            {
+                type: Schema.Types.ObjectId,
+                ref : 'thought'   //referencia al nombre del modelo case sensitive
+
+            }
         ]
     },
     {
         toJSON :{
             virtuals : true, //incluir las propiedades virtuales en el json
+            getters : true, //Incluir logica personalizada en las propiedades del documento
+            versionKey : false //no incluir la propiedad de control de versiones de documentos
         },
-        id : false //para que no incluya el id en los virtuales.
+        id : false, //para que no incluya el id en los virtuales.
+        
     }
 
 );

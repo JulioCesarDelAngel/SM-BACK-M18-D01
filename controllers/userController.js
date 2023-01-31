@@ -1,5 +1,5 @@
 const { User } = require('../models');
-const { findByIdAndUpdate } = require('../models/User');
+
 
 module.exports = {
     async getUsers(request, response){
@@ -63,8 +63,19 @@ module.exports = {
             response.status(500).json( error );
         }
     },
-    updateUser(request, response){
-        response.status(200).json({code:'200', message:'ACTUALIZAR Usuario', data:[{userId:`${request.params.userId}`,name:"usuario actualizado demo"}]});
+
+    async updateUser(request, response){
+        try {
+            data = await User.findOneAndUpdate({ _id: request.params.userId }, request.body, { new: true } ) //  new: true para que devuelva el docto actualizado )
+            if (!data){
+                response.status(404).json({code:404, message:"no se encontro el usuario",data:[]}); 
+                return
+            }
+            response.status(200).json(data); 
+        }
+        catch ( error ){
+            response.status(500).json( error );
+        }
     },
 
     async addFriend (request, response){
@@ -84,6 +95,7 @@ module.exports = {
             response.status(500).json( error );
         }
     },
+
     async deleteFriend(request, response) {
         try {
             data = await User.findByIdAndUpdate(
