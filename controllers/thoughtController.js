@@ -1,0 +1,52 @@
+const { Thought, User } = require('../models');
+
+module.exports = {
+    async getThoughts(request, response){
+        try {
+            let data = await Thought.find({});
+            response.status(200).json(data); 
+        }
+        catch ( error ){
+            response.status(500).json( error );
+        }
+    },
+
+    async getSingleThought ( request, response) {
+        try {
+            let data =  await Thought.findById(request.params.id);
+            response.status(200).json(data);     
+        }
+        catch ( error ){
+            response.status(500).json( error );
+        }
+
+    },
+    async addThought(request, response){
+        try {
+            data = await Thought.create(request.body);
+            
+            if (data){
+                console.log('Thougth insert:', data);
+                  let result = await User.findByIdAndUpdate(
+                    {_id : request.body.userId},
+                    {$addToSet: {thoughts: data._id} }, { new : true}
+                );
+                if (!result)
+                {
+                    response.status(404).json({code:404, message:"no se encontro el usuario",data:[]});                    
+                }
+                else{
+                    response.status(200).json(result); 
+                }
+            }
+            else{
+                response.status(500).json({code:500, message:"Ocurrio un error al asignar el pensamiento al usuario",data:[]});
+            }
+            
+        }
+        catch ( error ){
+            response.status(500).json( error );
+        }        
+
+    },
+};
