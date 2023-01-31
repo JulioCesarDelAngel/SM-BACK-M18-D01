@@ -83,5 +83,23 @@ module.exports = {
         catch ( error ){
             response.status(500).json( error );
         }
+    },
+    async deleteFriend(request, response) {
+        try {
+            data = await User.findByIdAndUpdate(
+                {_id : request.params.userId},
+                {$pull: {friends: {$in : [request.params.friendId]}  } }, { new : true}
+                );
+                console.log('resultSET',data)
+                if (!data){
+                    response.status(404).json({code:404, message:"no se encontro el usuario",data:[]}); 
+                    return
+                }
+                response.status(200).json(data); 
+        }
+        catch ( error ){
+            response.status(500).json( error );
+        }
+
     }
 };
