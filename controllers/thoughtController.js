@@ -49,4 +49,30 @@ module.exports = {
         }        
 
     },
+    async updateThought(request, response){
+        try {
+            data = await Thought.findOneAndUpdate({ _id: request.params.id }, request.body, { new: true } ) //  new: true para que devuelva el docto actualizado )
+            if (!data){
+                response.status(404).json({code:404, message:"no se encontro el pensamiento",data:[]}); 
+                return
+            }
+            response.status(200).json(data); 
+        }
+        catch ( error ){
+            response.status(500).json( error );
+        }
+    },
+    async deleteThought(request, response){
+        try {
+            let data  = await Thought.findByIdAndDelete(request.params.id);
+            if (!data){
+                response.status(404).json({code:404, message:"no se encontro el pensamiento",data:[]}); 
+                return
+            }
+            response.status(200).json(data); 
+        }
+        catch ( error ){
+            response.status(500).json( error );
+        }
+    },
 };
