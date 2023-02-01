@@ -75,4 +75,29 @@ module.exports = {
             response.status(500).json( error );
         }
     },
+
+    async addReaction(request, response){
+        try {
+            console.log('request body',request.body);
+            console.log('id thought',request.params.thoughtId);
+            
+
+            let data = await Thought.findByIdAndUpdate(
+                {_id : request.params.thoughtId},
+                {$addToSet: {reactions: request.body} }, { new : true}
+            );
+            if (!data)
+            {
+                response.status(404).json({code:404, message:"no se encontro el pensamiento",data:[]});                    
+            }
+            else{
+                response.status(200).json(data); 
+            }
+        }
+        catch ( error ){
+            console.log('error:',error);
+
+            response.status(500).json( error );
+        }
+    }
 };
