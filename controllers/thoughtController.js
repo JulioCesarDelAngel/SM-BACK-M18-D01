@@ -102,7 +102,7 @@ module.exports = {
                     {$pull: {reactions: { reactionId : request.params.reactionId} } }, { new : true}
                 );
                 if (!data){
-                    response.status(404).json({code:404, message:"no se encontro la reaccion",data:[]}); 
+                    response.status(404).json({code:404, message:"no se encontro el pensamiento",data:[]}); 
                 }
                 response.status(200).json(data); 
         }
