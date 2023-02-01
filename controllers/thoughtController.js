@@ -78,13 +78,9 @@ module.exports = {
 
     async addReaction(request, response){
         try {
-            console.log('request body',request.body);
-            console.log('id thought',request.params.thoughtId);
-            
-
-            let data = await Thought.findByIdAndUpdate(
-                {_id : request.params.thoughtId},
-                {$addToSet: {reactions: request.body} }, { new : true}
+                let data = await Thought.findByIdAndUpdate(
+                    {_id : request.params.thoughtId},
+                    {$addToSet: {reactions: request.body} }, { new : true}
             );
             if (!data)
             {
@@ -96,7 +92,21 @@ module.exports = {
         }
         catch ( error ){
             console.log('error:',error);
+        }
+    },
 
+    async deleteReaction(request, response){  
+        try {
+                let data = await Thought.findByIdAndUpdate(
+                    {_id : request.params.thoughtId},
+                    {$pull: {reactions: { reactionId : request.params.reactionId} } }, { new : true}
+                );
+                if (!data){
+                    response.status(404).json({code:404, message:"no se encontro la reaccion",data:[]}); 
+                }
+                response.status(200).json(data); 
+        }
+        catch ( error ){
             response.status(500).json( error );
         }
     }
