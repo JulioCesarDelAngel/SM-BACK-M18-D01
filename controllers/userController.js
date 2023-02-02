@@ -1,4 +1,4 @@
-const { User } = require('../models');
+const { User, Thought } = require('../models');
 
 
 module.exports = {
@@ -57,7 +57,13 @@ module.exports = {
                 response.status(404).json({code:404, message:"no se encontro el usuario",data:[]}); 
                 return
             }
-            response.status(200).json(data); 
+            else{
+                //eliminar Thoughts si existen
+                console.log('Pensamientos:', data.thoughts);
+                result = Thought.deleteMany({ _id: { $in: data.thoughts } });
+                response.status(200).json({code:200, message : 'Usuario y pensamientos eliminados', data:[]}); 
+            }
+            
         }
         catch ( error ){
             response.status(500).json( error );
