@@ -26,7 +26,6 @@ module.exports = {
             data = await Thought.create(request.body);
             
             if (data){
-                console.log('Thougth insert:', data);
                   let result = await User.findByIdAndUpdate(
                     {_id : request.body.userId},
                     {$addToSet: {thoughts: data._id} }, { new : true}
@@ -91,7 +90,7 @@ module.exports = {
             }
         }
         catch ( error ){
-            console.log('error:',error);
+            response.status(500).json( error );
         }
     },
 

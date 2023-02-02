@@ -24,29 +24,9 @@ module.exports = {
         try {
             data = await User.create(request.body);
             response.status(200).json(data); 
-
-/*              let exists = await User.findOne({ 
-                    $or : [
-                            {'username' :`${request.body.username}`},
-                            {'email': `${request.body.email}`}
-                        ]});
-
-            if (!exists){
-                data = await User.create(request.body);
-                response.status(200).json(data); 
-            }
-            else
-            {
-                response.json({code:500, message:"Usuario ya existe", data :[]})
-            } */
         }
         catch ( error ){
             response.status(500).json( error );
-            /* console.log("error", error);
-            if (error.code ==11000)
-            {
-                console.log("usuario ya existe");
-            } */            
         }
         
     },
@@ -59,7 +39,6 @@ module.exports = {
             }
             else{
                 //eliminar Thoughts si existen
-                console.log('Pensamientos:', data.thoughts);
                 result = await Thought.deleteMany({ _id: { $in: data.thoughts } });
                 response.status(200).json({code:200, message : 'Usuario y pensamientos eliminados', data:[]}); 
             }
@@ -86,7 +65,6 @@ module.exports = {
 
     async addFriend (request, response){
         try {
-            console.log('datos', request.params);
             let data = await User.findByIdAndUpdate(
                 {_id : request.params.userId},
                 {$addToSet: {friends: request.params.friendId} }, { new : true}
@@ -108,7 +86,6 @@ module.exports = {
                 {_id : request.params.userId},
                 {$pull: {friends: {$in : [request.params.friendId]}  } }, { new : true}
                 );
-                console.log('resultSET',data)
                 if (!data){
                     response.status(404).json({code:404, message:"no se encontro el usuario",data:[]}); 
                     return
