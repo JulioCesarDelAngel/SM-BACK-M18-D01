@@ -1,8 +1,8 @@
 # Social Media BackEnd
 
 ## Descripción de la aplicación
-* API de red social que permite registrar usuarios.
-* Permite que los usuarios compartan pensamientos.
+* API de red social que permite administrar informacion de una base de datos MongoDB.
+* Permite registrar usuarios y que los usuarios compartan pensamientos.
 * Permite crear lista de amigos y reaccionar a pensamientos de amigos.
 
 
