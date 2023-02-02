@@ -60,7 +60,7 @@ module.exports = {
             else{
                 //eliminar Thoughts si existen
                 console.log('Pensamientos:', data.thoughts);
-                result = Thought.deleteMany({ _id: { $in: data.thoughts } });
+                result = await Thought.deleteMany({ _id: { $in: data.thoughts } });
                 response.status(200).json({code:200, message : 'Usuario y pensamientos eliminados', data:[]}); 
             }
             

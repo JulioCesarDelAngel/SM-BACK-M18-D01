@@ -103,6 +103,7 @@ module.exports = {
                 );
                 if (!data){
                     response.status(404).json({code:404, message:"no se encontro el pensamiento",data:[]}); 
+                    return
                 }
                 response.status(200).json(data); 
         }
